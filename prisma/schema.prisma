@@ -14,26 +14,29 @@ datasource db {
 }
 
 model User {
-  id        String    @id @default(uuid())
-  email     String    @unique
-  createdAt DateTime  @default(now())
-
-  reads Read[]
-  streaks Streak[]
+  id     String  @id @default(uuid())
+  email  String  @unique
+  reads  Read[]
+  Streak Streak?
 }
 
 model Read {
-  id     String @id @default(uuid())
-  user   User   @relation(fields: [userId], references: [id])
-  userId String
-  postId String
-  date   DateTime
+  id          String   @id @default(uuid())
+  userId      String
+  postId      String
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmChannel  String?
+  date        DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Streak {
-  id        String  @id @default(uuid())
-  user      User    @relation(fields: [userId], references: [id])
-  userId    String  @unique
-  streak    Int     @default(0)
+  id        String   @id @default(uuid())
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String   @unique
+  streak    Int      @default(0)
   updatedAt DateTime @updatedAt
 }

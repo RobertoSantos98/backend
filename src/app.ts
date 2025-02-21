@@ -2,7 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes';
-import streakRoutes from './routes/streakRoutes';
+import streakRoutes from './routes/streakRouter';
 import { PrismaClient } from '@prisma/client';
 
 dotenv.config();

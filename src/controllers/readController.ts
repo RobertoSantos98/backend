@@ -1,18 +1,19 @@
 import { Request, Response } from "express";
-import { logUserRead, getUserReadingHistory } from "../services/readService";
+import { processRead, getUserReadingHistory } from "../services/readService";
 
-export const registerRead = async (req: Request, res: Response) => {
-    const { userId, postId } = req.body;
+export const saveRead = async (req: Request, res: Response) => {
 
-    if (!userId || !postId) {
-        return res.status(400).json({ error: "userId e postId são obrigatórios" });
-    }
+  try {
 
-    try {
-        const read = await logUserRead(userId, postId);
-        res.json(read);
+    const { email, postId, utm_source, utm_medium, utm_campaign, utm_channel } = req.body;
 
+    await processRead( email, postId, utm_source, utm_medium, utm_campaign, utm_channel );
+
+    return res.status(201).json({ success: true, message: "Leitura registrada com sucesso!" });
+
+    
     }catch(error) {
+        console.error("Erro ao registrar leitura", error);
         res.status(500).json({ error: "Erro ao registrar leitura" });
     }
 };
